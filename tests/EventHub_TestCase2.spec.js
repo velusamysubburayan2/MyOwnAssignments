@@ -29,7 +29,7 @@ test('Validate the Booking confirmation', async function ({ page }) {
     const responseEvents = page.waitForResponse(response =>
         new URL(response.url()).pathname.endsWith('/events') && response.status() === 200
     );
-    await responseEvents;//here wait
+    await responseEvents;
     expect(page.url()).toContain('/events');
     const locEvents = page.getByTestId('event-card');
     console.log(await locEvents.count())
