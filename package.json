@@ -1,0 +1,19 @@
+{
+  "name": "myownassignments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pageObject":"npx playwright test tests/EventHub_TestCase2PO.spec.js --headed --project=chromium",
+    "cucumberTest":"npx cucumber-js Features/EventHub.feature --exit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5"
+  }
+}
