@@ -8,7 +8,7 @@ Get booking ref,price,tickets.
 6.CLick view my bookings,verify booking ref,price,tickets.
 */
 import { test, expect } from '@playwright/test';
-import testData from '../Utils/testData.json';
+import testData from '../Utils/testData.json' with {type:'json'};
 
 const jsonData = JSON.parse(JSON.stringify(testData));
 test('Validate the Booking confirmation', async function ({ page }) {
