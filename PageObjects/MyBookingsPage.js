@@ -10,4 +10,8 @@ export class MyBookingsPage {
         expect(await locMyBooing.locator('.gap-y-1 span').nth(1).textContent()).toContain(`${bookingDetails[1]} tickets`);
         expect(await locMyBooing.locator('.shrink-0 p').first().textContent()).toContain(bookingDetails[2]);
     }
+    async gotoViewDetails(bookingDetails){
+        const locMyBooing = this.bookingCard.filter({ hasText: bookingDetails[0] });
+        await locMyBooing.getByRole('button',{name:'View Details'}).click();
+    }
 }
