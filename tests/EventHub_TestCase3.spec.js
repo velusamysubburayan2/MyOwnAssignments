@@ -12,4 +12,58 @@
 11.Click view Details for your booking.
 12.Validate the details bookingref,price,ticket and eventTitle.
 */
-console.log('Just for checking it up')
+import { test } from '@playwright/test';
+import { LoginPage } from '../PageObjects/LoginPage';
+import { HomePage } from '../PageObjects/HomePage';
+import { EventsPage } from '../PageObjects/EventsPage';
+import { EventResourcePage } from '../PageObjects/EventResourcePage';
+import { MyBookingsPage } from '../PageObjects/MyBookingsPage';
+import { MyBookingsDetailsPage } from '../PageObjects/MyBookingsDetailsPage';
+import testData from '../Utils/testData.json' with {type: 'json'};
+
+const jsonData = JSON.parse(JSON.stringify(testData))
+test('Validate Bookings details in Bookings page', async function ({ page }) {
+
+    const loginPage = new LoginPage(page);
+    await loginPage.loginTo(jsonData.userName, jsonData.passWord);
+
+    const homePage = new HomePage(page);
+    await homePage.browseEventsVisible();
+    await Promise.all([
+        page.waitForResponse(response =>
+            response.url().includes('/events') && response.status() === 200
+        ),
+        homePage.gotoEventsPage()
+    ]);
+
+    const eventsPage = new EventsPage(page);
+    await eventsPage.eventsURLvisibility();
+    await eventsPage.eventsShouldBeMoreThanOne();
+    await Promise.all([
+        page.waitForURL(/\/events\/\d+$/),
+        eventsPage.bookNow(jsonData.eventTitle)
+    ]);
+
+    const eventResourcePage = new EventResourcePage(page);
+    await eventResourcePage.verifyEventTitle();
+    const bookingDetails = await eventResourcePage.bookEvent(jsonData.eventTitle, "Subburayan Velusamy", jsonData.userName, "9080751313");
+    await Promise.all([
+        page.waitForResponse(response =>
+            response.url().includes('/bookings') && response.status() === 200
+        ),
+        eventResourcePage.goToMyBookings()
+    ])
+
+    const myBookingsPage = new MyBookingsPage(page);
+    await myBookingsPage.verifyBookingDetails(bookingDetails);
+    await Promise.all([
+        page.waitForURL(/\/bookings\/\d+$/),
+        myBookingsPage.gotoViewDetails(bookingDetails)
+    ])
+    const myBookingsDetailsPage=new MyBookingsDetailsPage(page);
+    myBookingsDetailsPage.verifyBookingDetails(jsonData.eventTitle,bookingDetails)
+
+    await page.pause();
+
+
+})

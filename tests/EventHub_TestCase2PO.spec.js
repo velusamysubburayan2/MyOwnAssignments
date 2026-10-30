@@ -20,19 +20,19 @@ test('Validate the Booking confirmation', async function ({ page }) {
         + 'And also verify atlease one event should be present')
     await Promise.all([
         page.waitForResponse(response =>
-            new URL(response.url()).pathname.endsWith('/events') && response.status() === 200
+            response.url().includes('/events') && response.status() === 200
         ),
-        homePage.gotoEventsPage()]);
+        homePage.gotoEventsPage()
+    ]);
     const eventsPage =  new EventsPage(page);
     await eventsPage.eventsURLvisibility();
     await eventsPage.eventsShouldBeMoreThanOne();
 
     console.log('4.Pick one event and Click Book now button.')
-    await eventsPage.bookNow(jsonData.eventTitle);
-    const responseSpecificEvent = page.waitForResponse(response =>
-        new URL(response.url()).pathname.match(/\/events\/([^/]+)$/) && response.status() === 200
-    );
-    await responseSpecificEvent;
+    await Promise.all([
+        page.waitForURL(/\/events\/\d+$/),
+        eventsPage.bookNow(jsonData.eventTitle)
+    ]);
 
     console.log('5.verify the Event title in the page.Enter all the details with 2 tickets and confirm booking then verify booking confirmed text is present or not,' +
         'Get booking ref,price,tickets.')
@@ -42,9 +42,9 @@ test('Validate the Booking confirmation', async function ({ page }) {
     console.log('6.CLick view my bookings,verify booking ref,price,tickets.')
     await Promise.all([
         page.waitForResponse(response =>
-            new URL(response.url()).pathname.endsWith('/bookings') && response.status() === 200
+            response.url().includes('/bookings') && response.status() === 200
         ),
-    eventResourcePage.goToMyBookings()
+        eventResourcePage.goToMyBookings()
     ])
 
     const myBookingsPage = new MyBookingsPage(page);
