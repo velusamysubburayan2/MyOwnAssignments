@@ -5,7 +5,7 @@
     4.Go back to the Home page verify that the newly created event is present or not.
     */
 import { test, expect } from '@playwright/test';
-import testData from '../Utils/testData.json';
+import testData from '../Utils/testData.json' with {type:'json'};
 
 const jsonData = JSON.parse(JSON.stringify(testData));
 test('CreateEvent,BookTicket and Verify Bookings', async function ({ browser }) {
