@@ -61,9 +61,6 @@ test('Validate Bookings details in Bookings page', async function ({ page }) {
         myBookingsPage.gotoViewDetails(bookingDetails)
     ])
     const myBookingsDetailsPage=new MyBookingsDetailsPage(page);
-    myBookingsDetailsPage.verifyBookingDetails(jsonData.eventTitle,bookingDetails)
-
-    await page.pause();
-
+    await myBookingsDetailsPage.verifyBookingDetails(jsonData.eventTitle,bookingDetails)
 
 })

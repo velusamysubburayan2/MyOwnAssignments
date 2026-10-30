@@ -4,7 +4,10 @@ import { HomePage } from '../../PageObjects/HomePage.js';
 import { EventsPage } from '../../PageObjects/EventsPage.js';
 import { EventResourcePage } from '../../PageObjects/EventResourcePage.js';
 import { MyBookingsPage } from '../../PageObjects/MyBookingsPage.js';
+import { MyBookingsDetailsPage } from '../../PageObjects/MyBookingsDetailsPage.js';
+import testData from '../../Utils/testData.json' with {type: 'json'};
 
+const jsonData = JSON.parse(JSON.stringify(testData))
 Given('Login with {string} and {string}', { timeout: 10 * 1000 }, async function (userName, passWord) {
     const loginPage = new LoginPage(this.page)
     await loginPage.loginTo(userName, passWord);
@@ -35,17 +38,27 @@ When('Select {string} event and click Book Now', async function (eventTitle) {
     await responseSpecificEvent;
 });
 let bookingDetails;
-When('Enter the Booking Details {string}, {string}, {string}, {string} and Click confirm', async function (eventTitle,name,userName,phoneNumber) {
+When('Enter the Booking Details {string}, {string}, {string}, {string} and Click confirm', async function (eventTitle, name, userName, phoneNumber) {
     const eventResourcePage = new EventResourcePage(this.page);
-    bookingDetails = await eventResourcePage.bookEvent(eventTitle, name,userName, phoneNumber);
+    bookingDetails = await eventResourcePage.bookEvent(eventTitle, name, userName, phoneNumber);
     await Promise.all([
         this.page.waitForResponse(response =>
             new URL(response.url()).pathname.endsWith('/bookings') && response.status() === 200
         ),
-    eventResourcePage.goToMyBookings() ]);
+        eventResourcePage.goToMyBookings()]);
 })
 
-Then('Verify Booking Details in My bookings page',async function (){
+Then('Verify Booking Details in My bookings page', async function () {
     const myBookingsPage = new MyBookingsPage(this.page);
     await myBookingsPage.verifyBookingDetails(bookingDetails)
+})
+
+When("Click View Details Button", async function () {
+    const myBookingsPage = new MyBookingsPage(this.page);
+    await myBookingsPage.gotoViewDetails(bookingDetails);
+})
+
+Then("Validate the details", async function () {
+    const myBookingsDetailsPage = new MyBookingsDetailsPage(this.page);
+    await myBookingsDetailsPage.verifyBookingDetails(jsonData.eventTitle, bookingDetails)
 })
