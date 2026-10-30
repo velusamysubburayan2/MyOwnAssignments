@@ -12,3 +12,4 @@
 11.Click view Details for your booking.
 12.Validate the details bookingref,price,ticket and eventTitle.
 */
+console.log('Just for checking it up')
