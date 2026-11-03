@@ -4,6 +4,7 @@ export class MyBookingsPage {
     constructor(page) {
         this.page = page;
         this.bookingCard = this.page.getByTestId('booking-card');
+        this.noBookingsLoc=this.page.getByText('No bookings yet');
     }
     async verifyBookingDetails(bookingDetails) {
         const locMyBooing = this.bookingCard.filter({ hasText: bookingDetails[0] });
@@ -14,5 +15,8 @@ export class MyBookingsPage {
     async gotoViewDetails(bookingDetails) {
         const locMyBooing = this.bookingCard.filter({ hasText: bookingDetails[0] });
         await locMyBooing.getByRole('button', { name: 'View Details' }).click();
+    }
+    async noBookingsTextVisibility(){
+        await expect(this.noBookingsLoc).toBeVisible();
     }
 }
