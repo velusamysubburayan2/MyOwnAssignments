@@ -6,6 +6,7 @@ export class HomePage {
         this.eventsPage = this.page.getByText('Browse Events →');
         this.eventCards = this.page.getByTestId('event-card');
         this.myBookingsLoc = this.page.getByTestId('nav-bookings');
+        this.logoutLoc=this.page.getByRole('button',{name:'Logout'});
     }
     async gotoEventsPage() {
         await this.eventsPage.click();
@@ -16,5 +17,11 @@ export class HomePage {
     async browseEventsVisible() {
         await this.eventCards.first().waitFor();
         await expect(this.assertBrowserEvent.first()).toBeVisible();
+    }
+    async browseEventsNotVisible() {
+        await expect(this.assertBrowserEvent.first()).not.toBeVisible();
+    }
+    async logout(){
+        await this.logoutLoc.click();
     }
 }
