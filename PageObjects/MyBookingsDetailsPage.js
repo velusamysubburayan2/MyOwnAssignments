@@ -12,6 +12,6 @@ export class MyBookingsDetailsPage {
         const price = await this.priceLoc.nth(1).textContent();
         expect(eventTitleview).toContain(eventTitle);
         expect(ticket).toContain(bookingDetails[1]);
-        expect(price.replace("$", "")).toContain(bookingDetails[2].replace("$",""));
+        expect(price.replace(/[,$]/g, "")).toContain(bookingDetails[2].replace(/[,$]/g,""));
     }
 }
