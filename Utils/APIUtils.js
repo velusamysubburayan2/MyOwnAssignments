@@ -8,7 +8,7 @@ export class APIUtils {
                 "content-type": "application/json"
             },
             data: {
-                email: "mvsrayan1@gmail.com",
+                email: "Boopalan@gmail.com",
                 password: "Boopalan@231996"
             }
         })

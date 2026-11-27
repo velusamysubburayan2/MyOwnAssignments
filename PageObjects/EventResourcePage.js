@@ -21,7 +21,9 @@ export class EventResourcePage {
         await this.fullNameLoc.fill(name);
         await this.mailLoc.fill(mail);
         await this.phoneNumberLoc.fill(phoneNumber);
-        await this.addPlusLoc.click();
+        if(await this.addPlusLoc.isEnabled()){
+            this.addPlusLoc.click();
+        }
         await this.confirmBookingLoc.click();
         await expect(this.confirmBookingTextLoc).toBeVisible();
         await expect(this.reserveTicketTextLoc).toBeVisible();
