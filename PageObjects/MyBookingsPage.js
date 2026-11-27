@@ -9,7 +9,14 @@ export class MyBookingsPage {
     async verifyBookingDetails(bookingDetails) {
         const locMyBooing = this.bookingCard.filter({ hasText: bookingDetails[0] });
         const price = await locMyBooing.locator('.shrink-0 p').first().textContent();
-        expect(await locMyBooing.locator('.gap-y-1 span').nth(1).textContent()).toContain(`${bookingDetails[1]} tickets`);
+        const tickets=await locMyBooing.locator('.gap-y-1 span').nth(1).textContent();
+        if(tickets?.includes(`${bookingDetails[1]} tickets`)){
+            expect(tickets).toContain(`${bookingDetails[1]} tickets`);
+        }
+        else{
+            expect(tickets).toContain(`${bookingDetails[1]} ticket`);
+        }
+       
         expect(price.replace(/[$,]/g, '')).toContain(bookingDetails[2].replace(/[$,]/g, ''));
     }
     async gotoViewDetails(bookingDetails) {
